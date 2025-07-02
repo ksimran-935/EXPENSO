@@ -1,0 +1,260 @@
+/* Light Blue Theme Variables */
+:root {
+  --light-blue-1: #e6f0ff;
+  --light-blue-2: #cce0ff;
+  --light-blue-3: #b3d1ff;
+  --light-accent: #4d88ff;
+  --light-text: #333;
+}
+
+body{
+    background: linear-gradient(135deg, var(--dark-blue) 0%, var(--primary-blue) 100%);
+}
+/* Dashboard Main */
+.dashboard-main {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: linear-gradient(135deg, var(--dark-blue) 0%, var(--primary-blue) 100%);
+}
+
+/* Summary Cards */
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.card {
+  background: rgb(255, 255, 255);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease;
+  border: 1px solid var(--light-blue-2);
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+.card h3 {
+  margin-top: 0;
+  color: var(--light-text);
+  font-size: 1.2rem;
+}
+
+.amount {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+}
+
+.balance-card .amount {
+  color: var(--light-accent);
+}
+
+.spent-card .amount {
+  color: #ff4d4d;
+}
+
+.savings-card .amount {
+  color: #22c55e;
+}
+
+
+.positive {
+  color: #22c55e;
+}
+
+.negative {
+  color: #ff4d4d;
+}
+
+/* Transaction Form */
+.add-transaction {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border: 1px solid var(--light-blue-2);
+}
+
+.add-transaction h2 {
+  margin-top: 0;
+  color: var(--light-text);
+  border-bottom: 2px solid var(--light-blue-3);
+  padding-bottom: 0.5rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--light-text);
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid var(--light-blue-2);
+  border-radius: 8px;
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--light-blue-1);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--light-accent);
+  box-shadow: 0 0 0 3px rgba(77, 136, 255, 0.2);
+}
+
+.btn {
+  background: var(--light-accent);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.3s;
+}
+
+.btn:hover {
+  background: #3a7bff;
+}
+
+/* Recent Transactions */
+.recent-transactions {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border: 1px solid var(--light-blue-2);
+}
+
+.recent-transactions h2 {
+  margin-top: 0;
+  color: var(--light-text);
+  border-bottom: 2px solid var(--light-blue-3);
+  padding-bottom: 0.5rem;
+}
+
+.transaction {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--light-blue-2);
+}
+
+.transaction:last-child {
+  border-bottom: none;
+}
+
+.transaction-info {
+  flex: 1;
+}
+
+.category {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: capitalize;
+  background: rgb(9, 110, 242);
+  color: var(--light-text);
+}
+
+.date {
+  display: block;
+  font-size: 1rem;
+  color: #666;
+  margin-top: 0.25rem;
+}
+
+.description {
+  display: block;
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 0.25rem;
+}
+
+.transaction .amount {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.transaction .income {
+  color: #22c55e;
+}
+
+.transaction .expense {
+  color: #ff4d4d;
+}
+
+
+/* Notification Styles */
+.notification {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #22c55e;
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.notification.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Balance Preview */
+#balance-preview,
+#savings-preview {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+/* Transaction Actions */
+.transaction-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .summary-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .dashboard-main {
+    padding: 1rem;
+  }
+  
+  .add-transaction,
+  .recent-transactions {
+    padding: 1.5rem;
+  }
+}
