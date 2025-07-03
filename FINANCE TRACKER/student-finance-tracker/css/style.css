@@ -25,39 +25,47 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
-  border-bottom: 1px solid rgba(96, 165, 250, 0.3); /* accent blue border */
+  border-bottom: 1px solid rgba(96, 165, 250, 0.3); 
 }
 
-/* Grid layout: logo (left), nav (center) */
+
 .nav-container {
   max-width: 1200px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 0 2rem;
 }
 
 /* Expenso Logo Styles */
+/* ===== Reusable Logo Component ===== */
+/* ===== Base Logo Styles (Reusable) ===== */
+.expenso-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  font-weight: 700;
+  cursor: pointer;
+}
+
 .expenso-logo {
   display: flex;
   align-items: center;
   gap: 0.6rem;
   font-weight: 700;
-  font-size: 1.25rem;
-  letter-spacing: 1.5px;
-  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  cursor: default; /* non-clickable pointer */
   user-select: none;
 }
 
 .expenso-icon {
-  display: inline-block;
   width: 2.1rem;
   height: 2.1rem;
   background: linear-gradient(135deg, var(--accent-blue) 60%, var(--primary-blue) 100%);
   border-radius: 0.5rem 50% 50% 50%;
   position: relative;
-  margin-right: 0.1rem;
   box-shadow: 0 2px 8px rgba(30, 41, 59, 0.1);
 }
 
@@ -75,19 +83,12 @@ body {
 }
 
 .expenso-text {
-  color: #fff;
-  font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
-  font-size: 1.15em;
+  font-size: 1.25rem;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
+  color: #fff;
 }
 
-/* Center Container for Nav Links */
-.nav-center {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
 
 /* Navbar Links */
 .nav-links {
@@ -111,7 +112,6 @@ body {
   font-size: 1rem;
   padding: 0.3rem 0.7rem;
   border-radius: 0.3rem;
-  display: flex; 
   transition: transform 0.2s ease;
 }
 
@@ -124,22 +124,10 @@ body {
 /* Responsive Behavior */
 @media (max-width: 768px) {
   .nav-container {
-    grid-template-columns: 1fr;
     flex-direction: column;
     padding: 1rem;
   }
-
-  .nav-center {
-    justify-content: center;
-    margin-top: 1rem;
-  }
-
-  .nav-links {
-    flex-direction: column;
-    gap: 1rem;
-  }
 }
-
 /* Hero/Landing Section */
 .hero {
   display: flex;
@@ -184,7 +172,6 @@ body {
 }
 
 
-
 .hero-svg-image {
   width: 100%;
   max-width: 400px;
@@ -202,6 +189,28 @@ body {
   animation: floatComplex 5s ease-in-out infinite;
 }
 
+@media (max-width: 768px) {
+  /* Stack hero content vertically */
+  .hero {
+    flex-direction: column;
+    text-align: center;
+    padding: 3rem 1.5rem;
+  }
+
+  .hero-content {
+    max-width: 100%;
+    animation: slideUpFadeIn 1s ease-out forwards; 
+  }
+
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+
+  .hero-content p {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+}
 
 /* About Us Section */
 .about-us {
@@ -339,9 +348,8 @@ body {
   .about-container ul {
     flex-direction: column;
     gap: 1rem;
-  }
+  } 
 }
-
 
 
 /* Footer */
@@ -365,30 +373,11 @@ body {
   min-width: 250px;
 }
 
-.expenso-icon {
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  background: linear-gradient(135deg, var(--accent-blue) 60%, var(--primary-blue) 100%);
-  border-radius: 5px 50% 50% 50%;
-  vertical-align: middle;
-  margin-right: 10px;
-}
-
-.expenso-text {
-  font-weight: 700;
-  font-size: 1.5rem;
-  color: white;
-}
 
 .footer-contact {
   margin: 1rem 0;
   font-size: 0.9rem;
   opacity: 0.8;
-}
-.footer-contact a Email:hover
-{
-  color: var(--accent-blue);
 }
 
 .footer-links {
@@ -417,20 +406,6 @@ body {
   text-decoration: none;
   transition: color 0.3s;
 }
-
-.footer-links a:hover {
-  color: var(--accent-blue);
-}
-
-.footer-social {
-  margin-top: 1rem;
-}
-
-.footer-social a {
-  display: inline-block;
-  margin-right: 1rem;
-}
-
 .footer-copyright {
   text-align: center;
   margin-top: 2rem;

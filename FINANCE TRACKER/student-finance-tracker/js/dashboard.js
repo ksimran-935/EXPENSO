@@ -73,20 +73,33 @@ document.addEventListener('DOMContentLoaded', function() {
     return '₹' + (isNaN(amount) ? '0.00' : amount.toFixed(2));
   }
 
-  function getMonthlyData(year, month) {
-    const monthTransactions = transactions.filter(t => {
-      try {
-        const date = new Date(t.date);
-        return date.getFullYear() === year && date.getMonth() === month;
-      } catch (e) {
-        console.error('Invalid date in transaction:', t.date);
-        return false;
+  function calculateTotals() {
+    let balance = 0;
+    let totalExpenses = 0;
+    let savings = 0;
+
+    // Process all transactions
+    transactions.forEach(t => {
+      if (t.type === 'income') {
+        if (t.category === 'savings') {
+          savings += t.amount;
+        } else {
+          balance += t.amount;
+        }
+      } else if (t.type === 'expense') {
+        if (t.category === 'savings') {
+          savings -= t.amount;
+        } else {
+          balance -= t.amount;
+          totalExpenses += t.amount;
+        }
       }
     });
-    
+
     return {
-      income: monthTransactions.filter(t => t.type === 'income').map(t => t.amount),
-      expenses: monthTransactions.filter(t => t.type === 'expense').map(t => t.amount)
+      balance,
+      totalExpenses,
+      savings
     };
   }
 
@@ -101,55 +114,51 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('current-balance').textContent = formatRupees(totals.balance);
     document.getElementById('total-spent').textContent = formatRupees(totals.totalExpenses);
     document.getElementById('total-savings').textContent = formatRupees(totals.savings);
-  }
-
-  function calculateTotals() {
-    const currentDate = new Date();
-    const currentMonth = currentDate.getMonth();
-    const currentYear = currentDate.getFullYear();
     
-    const currentMonthData = getMonthlyData(currentYear, currentMonth);
-    const currentIncome = currentMonthData.income.reduce((sum, amount) => sum + amount, 0);
-    const currentExpenses = currentMonthData.expenses.reduce((sum, amount) => sum + amount, 0);
-    const currentBalance = currentIncome - currentExpenses;
-    
-    return {
-      balance: currentBalance,
-      totalExpenses: currentExpenses,
-      savings: currentBalance
-    };
   }
 
   function updateTransactionList() {
-    const recentTransactions = [...transactions]
-      .sort((a, b) => {
-        try {
-          return new Date(b.date) - new Date(a.date);
-        } catch (e) {
-          console.error('Error sorting transactions by date:', e);
-          return 0;
-        }
-      })
+  const recentTransactions = [...transactions]
+    .sort((a, b) => {
       
+      try {
+        const dateA = new Date(a.date).getTime();
+        const dateB = new Date(b.date).getTime();
+        
+        
+        if (dateA !== dateB) {
+          return dateB - dateA;
+        }
+        
+        const timestampA = a.timestamp ;
+        const timestampB = b.timestamp ;
+        return timestampB - timestampA;
+      } catch (e) {
+        console.error('Error sorting transactions:', e);
+        return 0;
+      }
+    });
 
-    if (recentTransactions.length === 0) {
-      transactionsList.innerHTML = '<p>No transactions yet. Add one to get started!</p>';
-      return;
-    }
-
-    transactionsList.innerHTML = recentTransactions.map(transaction => `
-      <div class="transaction">
-        <div class="transaction-info">
-          <span class="category ${transaction.category}">${transaction.category}</span>
-          <span class="date">${formatDate(transaction.date)}</span>
-          ${transaction.description ? `<span class="description">${transaction.description}</span>` : ''}
-        </div>
-        <div class="amount ${transaction.type}">
-          ${transaction.type === 'income' ? '+' : '-'}${formatRupees(transaction.amount)}
-        </div>
-      </div>
-    `).join('');
+  if (recentTransactions.length === 0) {
+    transactionsList.innerHTML = '<p>No transactions yet. Add one to get started!</p>';
+    return;
   }
+
+  transactionsList.innerHTML = recentTransactions.map(transaction => `
+    <div class="transaction ${transaction.category === 'savings' ? 'savings-transaction' : ''}">
+      <div class="transaction-info">
+        <span class="category ${transaction.category}">
+          ${transaction.category}
+        </span>
+        <span class="date">${formatDate(transaction.date)}</span>
+        ${transaction.description ? `<span class="description">${transaction.description}</span>` : ''}
+      </div>
+      <div class="amount ${transaction.type}">
+        ${transaction.type === 'income' ? '+' : '-'}${formatRupees(transaction.amount)}
+      </div>
+    </div>
+  `).join('');
+}
 
   function showNotification(message, type = 'success') {
     const notification = document.createElement('div');
@@ -186,17 +195,27 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
     
+    const transactionDate = new Date(dateInput.value);
+    // If transaction date is today, use current time, otherwise use start of day
+    const now = new Date();
+    if (transactionDate.toDateString() === now.toDateString()) {
+      transactionDate.setHours(now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds());
+    } else {
+      transactionDate.setHours(12, 0, 0, 0); // Set to noon for consistent sorting
+    }
+    
     const transaction = {
       id: Date.now(),
       type: typeSelect.value,
       amount: amount,
       category: categorySelect.value,
-      date: new Date(dateInput.value).toISOString(),
-      description: descriptionInput.value || '',
-      timestamp: new Date().getTime()
+      date: transactionDate.toISOString(),
+      timestamp: new Date().getTime(), 
+      description: descriptionInput.value || ''
     };
     
-    transactions.push(transaction);
+    // Add new transaction to beginning of array
+    transactions.unshift(transaction);
     saveTransactions();
     updateDashboard();
     transactionForm.reset();

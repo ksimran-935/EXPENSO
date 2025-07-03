@@ -1,4 +1,4 @@
-/* Light Blue Theme Variables */
+
 :root {
   --light-blue-1: #e6f0ff;
   --light-blue-2: #cce0ff;
@@ -63,7 +63,6 @@ body{
 .savings-card .amount {
   color: #22c55e;
 }
-
 
 .positive {
   color: #22c55e;
@@ -130,9 +129,7 @@ body{
   transition: background 0.3s;
 }
 
-.btn:hover {
-  background: #3a7bff;
-}
+
 
 /* Recent Transactions */
 .recent-transactions {
@@ -203,14 +200,21 @@ body{
   color: #ff4d4d;
 }
 
+.savings-transaction {
+  background-color: rgba(34, 197, 94, 0.05);
+  
+}
+
+.savings-transaction .category.savings {
+  background-color: #22c55e;
+  color: white;
+}
 
 /* Notification Styles */
 .notification {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background: #22c55e;
-  color: white;
   padding: 1rem 1.5rem;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -225,14 +229,16 @@ body{
   opacity: 1;
 }
 
-/* Balance Preview */
-#balance-preview,
-#savings-preview {
-  font-size: 0.9rem;
-  color: #666;
-  margin-top: 0.5rem;
-  font-style: italic;
+.notification.success {
+  background: #22c55e;
+  color: white;
 }
+
+.notification.error {
+  background: #ef4444;
+  color: white;
+}
+
 
 /* Transaction Actions */
 .transaction-actions {
